@@ -1,10 +1,12 @@
 <template>
   <section class="post-list">
     <PostPreview
-      id="1"
-      thumbnail="'https://www.comillas.edu/images/modulo_cabecera/postgrado/Propios/DiplomaLegalTech.jpg'"
-      title="Hello"
-      previewText="My first Post"
+      v-for="post in posts "
+      :key="post.id"
+      :id="post.id"
+      :thumbnail="post.thumbnail"
+      :title="post.title"
+      :previewText="post.previewText"
       :is-admin="isAdmin"
     />
   </section>
@@ -21,6 +23,10 @@ export default {
     isAdmin: {
       type: Boolean,
       dafault: false
+    },
+    posts: {
+      type: Array,
+      required: true
     }
   }
 }
