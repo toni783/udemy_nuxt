@@ -1,5 +1,4 @@
 import Vuex from 'vuex'
-import axios from 'axios'
 const createStore = () => {
   return new Vuex.Store({
     state: {
@@ -19,12 +18,12 @@ const createStore = () => {
     },
     actions: {
       nuxtServerInit(vuexContext, nuxtContext) {
-        return axios.get('https://react-my-burger-36ace.firebaseio.com/posts.json')
+        return nuxtContext.app.$axios.$get(`/posts.json`)
           .then((res) => {
             const postsArray = []
-            for (const key in res.data) {
+            for (const key in res) {
               postsArray.push({
-                ...res.data[key],
+                ...res[key],
                 id: key
               });
             }
@@ -42,13 +41,12 @@ const createStore = () => {
           ...post,
           updatedDate: new Date()
         }
-        return axios
-          .post('https://react-my-burger-36ace.firebaseio.com/posts.json', createdPost)
+        return this.$axios.$post(`/posts.json`, createdPost)
           .then(result => {
             // console.log(result)
             vuexContext.commit('addPost', {
               ...createdPost,
-              id: result.data.name
+              id: result.name
             })
           })
           .catch(err => {
@@ -57,9 +55,8 @@ const createStore = () => {
       },
       editPost(vuexContext, editedPost) {
 
-        return axios
-          .put(
-            `https://react-my-burger-36ace.firebaseio.com/posts/${editedPost.id}.json`,
+        return this.$axios.$put(
+            `/posts/${editedPost.id}.json`,
             editedPost
           )
           .then(res => {

@@ -8,19 +8,16 @@
 
 <script>
 import AdminPostForm from '~/components/Admin/AdminPostForm'
-import axios from 'axios'
 export default {
   components: {
     AdminPostForm
   },
   asyncData(context) {
-    return axios
-      .get(
-        `https://react-my-burger-36ace.firebaseio.com/posts/${context.params.postId}.json`
-      )
+    return context.app.$axios
+      .$get(`/posts/${context.params.postId}.json`)
       .then(res => {
         return {
-          loadedPost: { ...res.data, id: context.params.postId }
+          loadedPost: { ...res, id: context.params.postId }
         }
       })
       .catch(err => {

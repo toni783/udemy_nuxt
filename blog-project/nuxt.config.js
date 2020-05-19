@@ -38,11 +38,11 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['~assets/styles/main.css'],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['~plugins/core-components.js', '~plugins/date-filter.js'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -50,7 +50,14 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: ['@nuxtjs/axios'],
+  /*
+   ** axios module configuration
+   */
+  axios: {
+    baseURL: process.env.BASE_URL || 'https://react-my-burger-36ace.firebaseio.com',
+    creedentials: false
+  },
   /*
    ** Build configuration
    */
@@ -59,5 +66,9 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
+  },
+  transition: {
+    name: 'fade',
+    mode: 'out-in'
   }
 }
