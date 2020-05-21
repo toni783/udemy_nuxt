@@ -1,3 +1,6 @@
+const bodyParser = require('body-parser')
+const axios = require('axios')
+
 export default {
   mode: 'universal',
   /*
@@ -70,5 +73,30 @@ export default {
   transition: {
     name: 'fade',
     mode: 'out-in'
+  },
+  // router: {
+  middleware: 'log',
+  // },
+  env: {
+    firebaseKey: '' // just for test
+  },
+  serverMiddleware: [bodyParser.json(), '~/api'],
+  generate: {
+    routes: function () {
+      return axios
+        .get('https://react-my-burger-36ace.firebaseio.com/posts.json')
+        .then(res => {
+          const routes = []
+          for (const key in res.data) {
+            routes.push({
+              route: `/posts/${key}`,
+              payload: {
+                postData: res.data[key]
+              }
+            })
+          }
+          return routes
+        })
+    }
   }
 }
